@@ -14,3 +14,7 @@ name = "app"
 [dependencies]
 actix-rt = "1.1.1"
 actix-web = "3.3.2"
+
+[dev-dependencies]
+reqwest = "0.10.9"
+tokio = "0.2.22"

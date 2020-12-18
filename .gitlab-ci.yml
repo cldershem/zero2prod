@@ -11,3 +11,12 @@ test:
     - cargo clippy -- -D warnings
     - cargo install cargo-audit
     - cargo audit
+
+
+security-audit-on-push:
+  script:
+    - ehco "hi"
+  only:
+    change:
+      - **/Cargo.toml
+      - **/Cargo.lock

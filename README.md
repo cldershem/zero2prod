@@ -12,3 +12,7 @@ doctl auth init
 doctl apps list
 history | grep sqlx
 DATABASE_URL=postgresql://{USERNAME}:{PASSWORD}@{URL}:{PORT}/newsletter?sslmode=require sqlx migrate run\n
+
+cargo sqlx prepare --check -- --bin zero2prod
+
+cargo sqlx prepare -- --bin zero2prod

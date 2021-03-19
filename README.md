@@ -16,3 +16,6 @@ DATABASE_URL=postgresql://{USERNAME}:{PASSWORD}@{URL}:{PORT}/newsletter?sslmode=
 cargo sqlx prepare --check -- --bin zero2prod
 
 cargo sqlx prepare -- --bin zero2prod
+
+docker run postgres:latest
+docker build --tag zero2prod --file Dockerfile .

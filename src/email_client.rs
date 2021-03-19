@@ -151,7 +151,7 @@ mod tests {
         assert_err!(outcome);
     }
 
-    #[tokio::test(threaded_scheduler)]
+    #[tokio::test]
     async fn send_email_times_out_if_the_server_takes_to_long() {
         let mock_server = MockServer::start().await;
         let email_client = email_client(mock_server.uri());

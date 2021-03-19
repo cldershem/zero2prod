@@ -13,8 +13,8 @@ doctl apps list
 history | grep sqlx
 DATABASE_URL=postgresql://{USERNAME}:{PASSWORD}@{URL}:{PORT}/newsletter?sslmode=require sqlx migrate run\n
 
+// # do a cargo clean
 cargo sqlx prepare --check -- --bin zero2prod
-
 cargo sqlx prepare -- --bin zero2prod
 
 docker run postgres:latest

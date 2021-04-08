@@ -11,6 +11,15 @@ use sqlx::{PgPool, Postgres, Transaction};
 use std::convert::{TryFrom, TryInto};
 use uuid::Uuid;
 
+/// This function only exists to force `sqlx prepare` to output this query for the tests.
+pub async fn fake(pool: &PgPool) {
+    let _saved = sqlx::query!("SELECT email, name, status FROM subscriptions")
+        .fetch_optional(pool)
+        .await
+        .expect("Failed to fetch saved subscription.")
+        .unwrap();
+}
+
 #[derive(serde::Deserialize)]
 pub struct FormData {
     email: String,

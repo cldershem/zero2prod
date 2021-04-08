@@ -4,6 +4,8 @@ migrate dev db
 migrate pro db
 
 doctl apps create --spec spec.yaml
+doctl apps list --format ID
+doctl apps update APP_ID --spec spec.yaml
 
 SKIP_DOCKER=true ./scripts/init_db.sh
 cargo test

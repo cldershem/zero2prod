@@ -8,21 +8,20 @@ pub struct Parameters {
 }
 
 #[tracing::instrument(name = "Confirm a pending subscriber", skip(parameters, pool))]
-pub async fn confirm(
-    parameters: web::Query<Parameters>,
-    pool: web::Data<PgPool>,
-) -> Result<HttpResponse, HttpResponse> {
-    let id = get_subscriber_id_from_token(&pool, &parameters.subscription_token)
-        .await
-        .map_err(|_| HttpResponse::InternalServerError().finish())?;
-    match id {
-        None => Err(HttpResponse::Unauthorized().finish()),
-        Some(subscriber_id) => {
-            confirm_subscriber(&pool, subscriber_id)
-                .await
-                .map_err(|_| HttpResponse::InternalServerError().finish())?;
+pub async fn confirm(parameters: web::Query<Parameters>, pool: web::Data<PgPool>) -> HttpResponse {
+    let id = match get_subscriber_id_from_token(&pool, &parameters.subscription_token).await {
+        Ok(id) => id,
+        Err(_) => return HttpResponse::InternalServerError().finish(),
+    };
 
-            Ok(HttpResponse::Ok().finish())
+    match id {
+        None => HttpResponse::Unauthorized().finish(),
+        Some(subscriber_id) => {
+            if confirm_subscriber(&pool, subscriber_id).await.is_err() {
+                return HttpResponse::InternalServerError().finish();
+            }
+
+            HttpResponse::Ok().finish()
         }
     }
 }

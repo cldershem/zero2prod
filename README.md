@@ -21,3 +21,7 @@ cargo sqlx prepare -- --bin zero2prod
 
 docker run postgres:latest
 docker build --tag zero2prod --file Dockerfile .
+
+# LATEST?@?>@K#J!O#J
+docker run -e POSTGRES_PASSWORD=password -d postgres
+./scripts/init_db.sh

@@ -16,8 +16,9 @@
 # ENV SQLX_OFFLINE true
 # RUN cargo build --release --bin zero2prod
 
-FROM rust:1.50 AS builder
-WORKDIR app
+FROM rust:1.56 AS builder
+WORKDIR /app
+RUN apt update && apt install lld clang -y
 COPY . .
 ENV SQLX_OFFLINE true
 RUN cargo build --release --bin zero2prod

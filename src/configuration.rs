@@ -29,6 +29,7 @@ pub struct DatabaseSettings {
     pub host: String,
     pub database_name: String,
     pub require_ssl: bool,
+    pub redis_uri: Secret<String>,
 }
 
 #[derive(serde::Deserialize, Clone)]

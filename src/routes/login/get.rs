@@ -1,19 +1,17 @@
 use actix_web::http::header::ContentType;
-use actix_web::{cookie::Cookie, web, HttpResponse};
+use actix_web::HttpResponse;
+use actix_web_flash_messages::IncomingFlashMessages;
+use std::fmt::Write;
 
-pub async fn login_form(request: web::HttpRequest) -> HttpResponse {
-    let error_html = match request.cookie("_flash") {
-        None => "".into(),
-        Some(cookie) => format!("<p><i>{}</i></p>", cookie.value()),
-    };
+pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
+    let mut error_html = String::new();
+
+    for m in flash_messages.iter() {
+        writeln!(error_html, "<p><i>{}</i></p>", m.content()).unwrap();
+    }
 
     HttpResponse::Ok()
         .content_type(ContentType::html())
-        .cookie(
-            Cookie::build("_flash", "")
-                .max_age(actix_web::cookie::time::Duration::ZERO)
-                .finish(),
-        )
         .body(format!(
             r#"<!DOCTYPE html>
     <html lang="en">
@@ -24,21 +22,21 @@ pub async fn login_form(request: web::HttpRequest) -> HttpResponse {
     <body>
     {}
     <form action="/login" method="post">
-        <label>Username
-            <input
-                type="text"
-                placeholder="Enter Username"
-                name="username"
-            >
-        </label>
-        <label>Password
-            <input
-                type="password"
-                placeholder="Enter Password"
-                name="password"
-            >
-        </label>
-        <button type="submit">Login</button>
+    <label>Username
+        <input
+            type="text"
+            placeholder="Enter Username"
+            name="username"
+        >
+    </label>
+    <label>Password
+        <input
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+        >
+    </label>
+    <button type="submit">Login</button>
     </form>
     </body>
     </html>"#,

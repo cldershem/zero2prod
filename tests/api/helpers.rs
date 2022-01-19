@@ -65,11 +65,11 @@ impl TestUser {
 
 pub struct TestApp {
     pub address: String,
+    pub api_client: reqwest::Client,
     pub db_pool: PgPool,
     pub email_server: MockServer,
     pub port: u16,
     pub test_user: TestUser,
-    pub api_client: reqwest::Client,
 }
 
 impl TestApp {

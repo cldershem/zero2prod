@@ -1,8 +1,7 @@
 use crate::session_state::TypedSession;
-use crate::utils::{e500, see_other};
+use crate::utils::{e500, make_flash_message, see_other};
 use actix_web::{http::header::ContentType, HttpResponse};
 use actix_web_flash_messages::IncomingFlashMessages;
-use std::fmt::Write;
 
 pub async fn publish_newsletter_form(
     session: TypedSession,
@@ -12,10 +11,7 @@ pub async fn publish_newsletter_form(
         return Ok(see_other("/login"));
     };
 
-    let mut msg_html = String::new();
-    for m in flash_messages.iter() {
-        writeln!(msg_html, "<p><i>{}</i></p>", m.content()).unwrap();
-    }
+    let msg_html = make_flash_message(flash_messages);
 
     Ok(HttpResponse::Ok()
         .content_type(ContentType::html())

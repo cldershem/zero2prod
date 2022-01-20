@@ -1,14 +1,10 @@
+use crate::utils::make_flash_message;
 use actix_web::http::header::ContentType;
 use actix_web::HttpResponse;
 use actix_web_flash_messages::IncomingFlashMessages;
-use std::fmt::Write;
 
 pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
-    let mut error_html = String::new();
-
-    for m in flash_messages.iter() {
-        writeln!(error_html, "<p><i>{}</i></p>", m.content()).unwrap();
-    }
+    let msg_html = make_flash_message(flash_messages);
 
     HttpResponse::Ok()
         .content_type(ContentType::html())
@@ -40,6 +36,6 @@ pub async fn login_form(flash_messages: IncomingFlashMessages) -> HttpResponse {
     </form>
     </body>
     </html>"#,
-            error_html
+            msg_html
         ))
 }

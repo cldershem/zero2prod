@@ -25,3 +25,13 @@ docker build --tag zero2prod --file Dockerfile .
 # LATEST?@?>@K#J!O#J
 docker run -e POSTGRES_PASSWORD=password -d postgres
 ./scripts/init_db.sh
+
+
+# TODO
+- Add way to make admin
+    - create 'admin' with random password
+    - show password once
+    - require password change on first login
+- SeeOther duplication in utils
+- flash messages should be in utils
+- do https://www.lpalmieri.com/posts/session-based-authentication-in-rust/#5-2-4-unhappy-path-the-new-password-is-too-short
